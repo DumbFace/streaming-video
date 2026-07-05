@@ -1,11 +1,5 @@
+import { Video as VideoDomain } from "@/src/lib/domain/entities/video";
 import mongoose, { Schema, Document, Model } from "mongoose";
-
-export interface IVideo extends Document {
-  title: string;
-  status: string;
-  masterPlaylistUrl?: string;
-  createdAt: Date;
-}
 
 const VideoSchema: Schema = new Schema(
   {
@@ -16,7 +10,7 @@ const VideoSchema: Schema = new Schema(
   { timestamps: true },
 );
 
-const Video: Model<IVideo> =
-  mongoose.models.Video || mongoose.model<IVideo>("Video", VideoSchema);
+const Video: Model<VideoDomain> =
+  mongoose.models.Video || mongoose.model<VideoDomain>("Video", VideoSchema);
 
 export default Video;
