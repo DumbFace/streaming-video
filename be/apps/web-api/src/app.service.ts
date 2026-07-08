@@ -1,30 +1,30 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Video } from 'libs/domain/src/entities/video';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+// import { Injectable, Logger } from '@nestjs/common';
+// import { Model } from 'mongoose';
+// import { InjectModel } from '@nestjs/mongoose';
+// import { Video } from '@app/domain';
 
-@Injectable()
-export class VideoService {
-  constructor(
-    @InjectModel(Video.name) private readonly videoModel: Model<Video>,
-  ) {}
+// @Injectable()
+// export class VideoService {
+//   constructor(
+//     @InjectModel(Video.name) private readonly videoModel: Model<Video>,
+//   ) {}
 
-  async createVideo(title: string, directory: string): Promise<Video> {
-    const newVideo = new this.videoModel({ title, directory });
-    return Object.assign(new Video(), await newVideo.save());
-  }
+//   async createVideo(title: string, description: string): Promise<Video> {
+//     const newVideo = new this.videoModel({ title, description });
+//     return Object.assign(new Video(), await newVideo.save());
+//   }
 
-  async findAllVideos(): Promise<Video[]> {
-    return this.videoModel.find().exec();
-  }
-}
+//   async findAllVideos(): Promise<Video[]> {
+//     return this.videoModel.find().exec();
+//   }
+// }
 
-@Injectable()
-export class AppService {
-  getHello(): string {
-    return 'Hello Wsdsdorld!';
-  }
-}
+// @Injectable()
+// export class VideoSegmentService {
+//   constructor(
+//     @InjectModel(VideoSegment.name)
+//   ){}
+// }
 
 // @Injectable()
 // export class VideoProcessingService {

@@ -4,10 +4,14 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: '*', // Allow your Next.js frontend port
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    credentials: false,
   });
-  await app.listen(process.env.PORT ?? 3000);
+
+  console.log('PORT: ' + process.env.PORT);
+
+  console.log('VIDEO_DIRECTORY: ' + process.env.VIDEO_DIRECTORY);
+  const server = await app.listen(process.env.PORT ?? 3005);
 }
 bootstrap();

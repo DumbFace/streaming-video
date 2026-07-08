@@ -1,19 +1,18 @@
-import { BaseEntity } from 'libs/domain/src/entities/base-entity';
-import { StatusVideo } from 'libs/domain/src/enums/status-video';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { StatusVideo } from 'apps/web-api/src/videos/enum/status-video';
 
 @Schema({ timestamps: true })
-export class Video extends BaseEntity {
-  @Prop({ default: '' })
+export class Video {
+  @Prop({ default: '', required: true })
   title: string = '';
 
-  @Prop({ default: '' })
+  @Prop({ default: '', required: true })
   description: string = '';
 
   @Prop({ default: '' })
   directory: string = '';
 
-  @Prop({ type: String, enum: StatusVideo, default: StatusVideo.processing })
+  @Prop({ enum: StatusVideo, default: StatusVideo.processing })
   status: StatusVideo = StatusVideo.processing;
 }
 

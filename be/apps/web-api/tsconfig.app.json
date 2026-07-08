@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "../../dist/apps/streaming-video-be",
+    "outDir": "../../dist/apps/web-api",
   },
   "include": [
     "src/**/*"
