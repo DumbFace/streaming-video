@@ -1,5 +1,6 @@
-import { Video } from 'apps/web-api/src/videos/entities/video';
-import { StatusVideo } from '../enum/status-video';
+import { Video } from '@lib/shared/src/classes/video.class';
+import { StatusVideo } from '@lib/shared/src/enums/video.enum';
+
 export class GetVideoDto {
   title: string = '';
   description: string = '';

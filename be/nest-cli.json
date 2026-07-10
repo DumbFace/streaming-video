@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/web-api",
   "projects": {
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
     "web-api": {
       "type": "application",
       "root": "apps/web-api",

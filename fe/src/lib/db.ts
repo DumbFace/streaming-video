@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const DATABASE_URI = process.env.DATABASE_URI || "";
 
-console.log("MONGODB_URI:", MONGODB_URI);
+console.log("DATABASE_URI:", DATABASE_URI);
 
-if (!MONGODB_URI) {
+if (!DATABASE_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside your .env file.",
+    "Please define the DATABASE_URI environment variable inside your .env file.",
   );
 }
 
@@ -28,7 +28,7 @@ async function connectDB() {
     };
 
     cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
+      .connect(DATABASE_URI, opts)
       .then((mongooseInstance) => {
         return mongooseInstance;
       });

@@ -1,0 +1,17 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:30
+#EXT-X-MEDIA-SEQUENCE:0
+#EXTINF:30.021334,
+https://kangfarmfun-bucket.s3.ap-southeast-1.amazonaws.com/videos/1783862450490-477817170/chunk_000.ts
+#EXT-X-DISCONTINUITY
+
+#EXTINF:30.021334,
+https://kangfarmfun-bucket.s3.ap-southeast-1.amazonaws.com/videos/1783862450490-477817170/chunk_001.ts
+#EXT-X-DISCONTINUITY
+
+#EXTINF:5.021334,
+https://kangfarmfun-bucket.s3.ap-southeast-1.amazonaws.com/videos/1783862450490-477817170/chunk_002.ts
+#EXT-X-DISCONTINUITY
+
+#EXT-X-ENDLIST

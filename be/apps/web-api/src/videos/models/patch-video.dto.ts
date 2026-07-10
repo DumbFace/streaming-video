@@ -1,4 +1,4 @@
-import { StatusVideo } from '../enum/status-video';
+import { StatusVideo } from '@lib/shared/src/enums/video.enum';
 export class PatchVideoDto {
   title: string = '';
   description: string = '';

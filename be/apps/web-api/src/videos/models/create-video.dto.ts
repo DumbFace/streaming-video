@@ -1,4 +1,4 @@
-import { StatusVideo } from 'apps/web-api/src/videos/enum/status-video';
+import { StatusVideo } from '@lib/shared/src/enums/video.enum';
 
 export class CreateVideoDto {
   title: string = '';

@@ -4,6 +4,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/src/components/ui/sidebar";
 import { SideBarApp } from "@/src/components/layout";
+import QueryProvider from "@/src/app/providers/provider";
+import { Toaster } from "sonner";
 
 
 const inter = Inter({
@@ -29,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
       <body>
         <SidebarProvider>
@@ -38,8 +40,12 @@ export default function RootLayout({
 
           <SidebarInset>
             <SidebarTrigger />
+            <Toaster />
+
             <main>
-              {children}
+              <QueryProvider>
+                {children}
+              </QueryProvider>
             </main>
           </SidebarInset>
 

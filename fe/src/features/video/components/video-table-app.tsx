@@ -1,33 +1,54 @@
 'use client'
-import { BaseTableApp } from '@/src/components/base/table/base-table-app'
+import { BaseTable } from '@/src/components/base/table/BaseTable'
 import { TypographyH1 } from '@/src/components/typographys/Typograpy'
 import { Button } from '@/src/components/ui/button'
+import { getVideos } from '@/src/features/video/actions/get-videos.action'
 import { videoColumns } from '@/src/features/video/columns/columns'
-import { Video } from '@/src/lib/domain/entities/video'
+import VideoDialog from '@/src/features/video/components/dialog'
+import { DefaultPagination } from '@/src/features/video/constants/pagination.constant'
+import { DialogMode, useVideoDialogStore } from '@/src/features/video/shared/dialogStore'
+import { IVideo } from '@lib/shared/src/intefaces/video.interface'
+import { useQuery } from '@tanstack/react-query'
+
 import { CirclePlus } from 'lucide-react'
 
-interface IVdeoTableAppPros {
-    data: Video[],
-}
 
-export const VideoTableApp = ({ data }: IVdeoTableAppPros) => {
+
+export const VideoTableApp = () => {
+    const { setState, pagination, onPaginationChange } = useVideoDialogStore((store) => store);
+
+    const { data: videos = [] } = useQuery<IVideo[], Error, IVideo[]>({
+        queryKey: ['videos', { pageIndex: pagination.pageIndex, pageSize: DefaultPagination.PageSize }],
+        queryFn: async () => await getVideos(pagination.pageIndex, DefaultPagination.PageSize),
+        staleTime: Infinity
+    })
+
+    const { data: pageVideoCount } = useQuery<number, Error, number>({
+        queryKey: ['videoPageCount'],
+        queryFn: async () => 0,
+        staleTime: Infinity
+    })
+
+    const handleOpenDialog = () => setState(DialogMode.Add);
+
     return (
         <div className="container w-auto mx-auto py-5 flex flex-col gap-y-5">
             <div className="container flex justify-between items-center">
                 <TypographyH1 text='Video' />
-                <Button>
+                <Button onClick={handleOpenDialog}>
                     <CirclePlus />
                     Add
                 </Button>
             </div>
 
-            <BaseTableApp
+            <BaseTable
                 columns={videoColumns()}
-                data={data}
-                pageCount={data.length}
-                pagination={{ pageIndex: 0, pageSize: 10, }}
-                onPaginationChange={() => { }}
+                data={videos}
+                pageCount={Math.ceil((pageVideoCount ?? 0) / DefaultPagination.PageSize)}
+                pagination={pagination}
+                onPaginationChange={onPaginationChange}
             />
+            <VideoDialog />
         </div>
     )
 }

@@ -5,10 +5,10 @@ import path from "path";
 // 1. Load environment variables manually since this runs outside Next.js runtime
 dotnenv.config({ path: path.resolve(process.cwd(), ".env") });
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const DATABASE_URI = process.env.DATABASE_URI || "";
 
-if (!MONGODB_URI) {
-  console.error("❌ Error: MONGODB_URI is not defined in your .env file.");
+if (!DATABASE_URI) {
+  console.error("❌ Error: DATABASE_URI is not defined in your .env file.");
   process.exit(1);
 }
 
@@ -16,10 +16,10 @@ async function runInitialization() {
   console.log("🚀 Starting Database Infrastructure Initialization...");
 
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(DATABASE_URI);
     console.log("📡 Connected to MongoDB successfully.");
 
-    await import("../lib/models/Videos");
+    await import("../features/video/models/video");
 
     console.log("⚙️ Syncing database indexes...");
     await mongoose.syncIndexes();

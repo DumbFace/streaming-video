@@ -4,7 +4,7 @@ https://docs.nestjs.com/providers#services
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Video } from './entities/video';
+import { Video } from '@lib/shared/src/classes/video.class';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -36,5 +36,15 @@ export class VideoService {
 
   async delete(id: string): Promise<boolean> {
     return !!this.videoSchema.findByIdAndDelete(id).exec();
+  }
+
+  async addSegment(id: string, segment: any): Promise<Video | null> {
+    return this.videoSchema
+      .findByIdAndUpdate(
+        id,
+        { $push: { segments: segment } },
+        { new: true }, // Returns the freshly updated document containing the new segment
+      )
+      .exec();
   }
 }
