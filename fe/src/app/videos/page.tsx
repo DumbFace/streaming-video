@@ -1,10 +1,6 @@
 
-import { BaseTableApp } from "@/src/components/base/table/base-table-app";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/src/components/ui/table";
 import { VideoTableApp } from "@/src/features/video/components/video-table-app";
-import connectDB from "@/src/lib/db";
 import { StatusVideo, Video } from "@/src/lib/domain/entities/video";
-import { TableFeatureType } from '../../features/column-registry';
 
 export default async function VideoListPage() {
     const dataSample: Array<Video> = [
@@ -144,6 +140,7 @@ export default async function VideoListPage() {
             updatedAt: new Date()
         }
     ];
+
     return (
         <VideoTableApp data={dataSample} />
     );
