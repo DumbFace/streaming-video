@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Logger,
   Param,
   Patch,
@@ -13,15 +14,22 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateVideoDto } from 'apps/web-api/src/videos/models/create-video.dto';
 import { GetVideoDto } from './models/get-video.dto';
-import { VideoService } from 'apps/web-api/src/videos/video.service';
-import { PatchVideoDto } from 'apps/web-api/src/videos/models/patch-video.dto';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import multerS3 from 'multer-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { VideoService } from './video.service';
+import { PatchVideoDto } from './models/patch-video.dto';
+import { CreateVideoDto } from './models/create-video.dto';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  RmqRecordBuilder,
+  Transport,
+} from '@nestjs/microservices';
+
 const s3 = new S3Client({
   region: process.env.AWS_REGION || '',
   credentials: {
@@ -35,6 +43,7 @@ export class VideoController {
   constructor(
     private readonly logger: Logger,
     private readonly videoService: VideoService,
+    // @Inject('WORKER_CLIENT') private readonly client: ClientProxy,
   ) {}
 
   @Post()
@@ -51,15 +60,7 @@ export class VideoController {
           callback(null, `videos/${uniqueSuffix}${ext}`);
         },
       }),
-      // storage: diskStorage({
-      //   destination: process.env.VIDEO_DIRECTORY,
-      //   filename: (req, file, callback) => {
-      //     const uniqueSuffix =
-      //       Date.now() + '-' + Math.round(Math.random() * 1e9);
-      //     const ext = extname(file.originalname);
-      //     callback(null, `${uniqueSuffix}${ext}`);
-      //   },
-      // }),
+
       fileFilter: (req, file, callback) => {
         if (!file.mimetype.match(/\/(mp4|mkv|quicktime|x-matroska)$/)) {
           return callback(
@@ -69,9 +70,6 @@ export class VideoController {
         }
         callback(null, true);
       },
-      // limits: {
-      //   fileSize: 100 * 1024 * 1024,
-      // },
     }),
   )
   async post(
@@ -118,35 +116,34 @@ export class VideoController {
   async delete(@Param('id') id: string): Promise<boolean> {
     return await this.videoService.delete(id);
   }
+
+  @Post('slice-video')
+  async publishMessageCat(
+    @Body('directory') directory: string,
+    @Body('index') index: number,
+    @Body('videoUrl') videoUrl: string,
+  ) {
+    const dynamicClient: ClientProxy = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://guest:guest@localhost:5672/'],
+        exchange: 'video_processor_exchange',
+        routingKey: '',
+        exchangeType: 'fanout',
+      },
+    });
+
+    await dynamicClient.connect();
+    console.log(videoUrl);
+    console.log(index);
+    console.log(directory);
+
+    dynamicClient.emit('', {
+      videoUrl: videoUrl,
+      index: index,
+      directory: directory,
+    });
+
+    return { message: 'Publish Successful' };
+  }
 }
-
-// @Post('process')
-// @HttpCode(HttpStatus.OK)
-// async processVideo(
-//   @Body('name') name: string,
-//   @Body('startTime') startTime: string,
-//   @Body('inputPath') inputPath: string,
-//   @Body('outputDir') outputDir: string,
-//   @Res() res: Response,
-// ) {
-//   const abortController = new AbortController();
-
-//   res.on('close', () => {
-//     if (!abortController.signal.aborted) {
-//       this.logger.warn(
-//         '⚠️ HTTP connection closed early by client! Aborting service task...',
-//       );
-//       abortController.abort();
-//     }
-//   });
-
-//   this.logger.log('⏳ Request is processing...');
-//   await this.videoService.splitVideoToHls(
-//     name,
-//     inputPath,
-//     outputDir,
-//     abortController.signal,
-//   );
-
-//   return { success: true };
-// }

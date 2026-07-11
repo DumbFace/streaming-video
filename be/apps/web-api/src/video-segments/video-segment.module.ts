@@ -4,8 +4,8 @@ https://docs.nestjs.com/modules
 */
 
 import { Logger, Module } from '@nestjs/common';
-import { VideoSegmentController } from 'apps/web-api/src/controllers/video-segment.controller';
 import { VideoSegment, VideoSegmentSchema } from './entities/video-segment';
+import { VideoSegmentController } from './video-segment.controller';
 
 @Module({
   imports: [
