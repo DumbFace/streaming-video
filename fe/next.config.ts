@@ -2,11 +2,9 @@ import type { NextConfig } from "next";
 import path, { join } from "path";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10gb",
-    },
-  },
+  output: "standalone",
+  devIndicators: false,
+
   transpilePackages: ["@lib/shared/src/*"],
 
   turbopack: {

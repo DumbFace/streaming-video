@@ -1,4 +1,5 @@
 allowBuilds:
+  bcrypt: true
   esbuild: false
   ffmpeg-static: true
   sharp: true

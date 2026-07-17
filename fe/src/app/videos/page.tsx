@@ -1,5 +1,6 @@
 
 import getQueryClient from "@/src/app/getQueryClient";
+import { auth } from "@/src/features/auth/auth";
 import { getVideos } from "@/src/features/video/actions/get-videos.action";
 import { VideoTableApp } from "@/src/features/video/components/video-table-app";
 import { DefaultPagination } from "@/src/features/video/constants/pagination.constant";
@@ -7,6 +8,9 @@ import ModelVideo from "@/src/features/video/models/video";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function VideoListPage() {
+
+    const session = await auth();
+    console.log("session: ", session);
     const queryClient = getQueryClient();
 
     await queryClient.prefetchQuery({

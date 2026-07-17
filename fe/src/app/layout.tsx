@@ -4,8 +4,10 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/src/components/ui/sidebar";
 import { SideBarApp } from "@/src/components/layout";
-import QueryProvider from "@/src/app/providers/provider";
+import QueryProvider from "@/src/app/providers/query-provider";
 import { Toaster } from "sonner";
+import { auth } from "@/src/features/auth/auth";
+import { SessionProvider } from "next-auth/react"
 
 
 const inter = Inter({
@@ -35,19 +37,19 @@ export default function RootLayout({
     >
       <body>
         <SidebarProvider>
+          <SessionProvider>
+            <SideBarApp />
+            <SidebarInset>
+              <SidebarTrigger />
+              <Toaster />
+              <main>
+                <QueryProvider>
 
-          <SideBarApp />
-
-          <SidebarInset>
-            <SidebarTrigger />
-            <Toaster />
-
-            <main>
-              <QueryProvider>
-                {children}
-              </QueryProvider>
-            </main>
-          </SidebarInset>
+                  {children}
+                </QueryProvider>
+              </main>
+            </SidebarInset>
+          </SessionProvider>
 
         </SidebarProvider>
 

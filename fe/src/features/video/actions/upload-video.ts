@@ -20,7 +20,6 @@ const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME || "";
 export async function uploadVideoAction(formData: VideoFormValues) {
   try {
     if (!formData.videoFile?.[0]) {
-      console.log("Video is undefined or null");
       return;
     }
 

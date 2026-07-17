@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Next.js: Debug Fullstack",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm dev",
+            "serverReadyAction": {
+                "pattern": "- Local:?\\s+(https?://localhost:\\d+)",
+                "uriFormat": "%s",
+            }
+        }
+    ]
+}

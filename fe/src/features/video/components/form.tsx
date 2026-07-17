@@ -69,13 +69,11 @@ export const VideoForm = () => {
             toast(response.message);
         } else {
             console.error('Upload failed:', response);
-            // toast(response.message);
         }
     }
 
     async function updateVideo(formVideoData: z.infer<typeof videoFormSchema>) {
         if (!data?.id) {
-            console.log("Id is undefined or null")
             return
         }
 

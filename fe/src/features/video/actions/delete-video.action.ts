@@ -10,8 +10,6 @@ export async function deleteVideoAction(id: string) {
 
     await ModelVideo.findByIdAndDelete(id);
 
-    // revalidatePath("/videos");
-
     return { success: true };
   } catch (error) {
     console.error("Failed to delete video:", error);

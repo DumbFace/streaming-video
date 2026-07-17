@@ -1,11 +1,10 @@
 import { create } from "zustand";
-import { VideoFormData } from "../components/dialog";
-import { Dialog } from "radix-ui";
 import { DefaultPagination } from "@/src/features/video/constants/pagination.constant";
 import {
   PaginationDefaultOptions,
   PaginationTableState,
 } from "@tanstack/react-table";
+import { VideoFormData } from "@/src/features/video/components/dialog";
 
 export const DialogMode = {
   Add: "add",

@@ -9,9 +9,6 @@ async function bootstrap() {
     credentials: false,
   });
 
-  console.log('PORT: ' + process.env.PORT);
-
-  console.log('VIDEO_DIRECTORY: ' + process.env.VIDEO_DIRECTORY);
   const server = await app.listen(process.env.PORT ?? 3005);
 }
 bootstrap();

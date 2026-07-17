@@ -1,0 +1,37 @@
+# 1. Base image
+FROM node:20-alpine AS base
+RUN npm install -g pnpm
+
+FROM base AS deps
+
+WORKDIR /app
+COPY fe/package.json fe/pnpm-lock.yaml fe/pnpm-workspace.yaml ./fe/
+
+RUN CI=true 
+RUN pnpm install -C fe
+
+COPY be ./be
+COPY fe ./fe
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app ./
+
+WORKDIR /app/fe
+
+
+RUN pnpm build
+
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3000
+
+COPY --from=builder /app/fe/.next/standalone ./
+
+COPY --from=builder /app/fe/public ./fe/public
+COPY --from=builder /app/fe/.next/static ./fe/.next/static
+
+EXPOSE 3000
+
+CMD ["node", "fe/server.js"]

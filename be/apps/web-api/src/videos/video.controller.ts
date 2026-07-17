@@ -90,7 +90,6 @@ export class VideoController {
 
     const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
-    console.log('presigned url: ', presignedUrl);
     var newVideo = await this.videoService.create(createVideoDto, file);
 
     return {
