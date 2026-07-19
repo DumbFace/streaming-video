@@ -1,15 +1,17 @@
-import { ChevronDown, User2 } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
-import { Sidebar, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/src/components/ui/sidebar";
+'use client'
+import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/src/components/ui/sidebar";
+import { UserNavFooter } from "@/src/components/layout/user-navigator-app";
+import { useSession } from "next-auth/react";
 
 export function SidebarFooterApp() {
+    const { status } = useSession();
 
     return (
         <SidebarFooter>
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton>
-                        <User2 /> Username
+                        <UserNavFooter />
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>

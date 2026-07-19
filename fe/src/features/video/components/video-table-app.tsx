@@ -2,12 +2,11 @@
 import { BaseTable } from '@/src/components/base/table/BaseTable'
 import { TypographyH1 } from '@/src/components/typographys/Typograpy'
 import { Button } from '@/src/components/ui/button'
-import { getVideos } from '@/src/features/video/actions/get-videos.action'
+import { getVideos, VideoAggregate } from '@/src/features/video/actions/get-videos.action'
 import { videoColumns } from '@/src/features/video/columns/columns'
 import VideoDialog from '@/src/features/video/components/dialog'
 import { DefaultPagination } from '@/src/features/video/constants/pagination.constant'
 import { DialogMode, useVideoDialogStore } from '@/src/features/video/shared/dialogStore'
-import { IVideo } from '@lib/shared/src/intefaces/video.interface'
 import { useQuery } from '@tanstack/react-query'
 
 import { CirclePlus } from 'lucide-react'
@@ -17,19 +16,13 @@ import { CirclePlus } from 'lucide-react'
 export const VideoTableApp = () => {
     const { setState, pagination, onPaginationChange } = useVideoDialogStore((store) => store);
 
-    const { data: videos = [] } = useQuery<IVideo[], Error, IVideo[]>({
-        queryKey: ['videos', { pageIndex: pagination.pageIndex, pageSize: DefaultPagination.PageSize }],
-        queryFn: async () => await getVideos(pagination.pageIndex, DefaultPagination.PageSize),
-        staleTime: Infinity
-    })
-
-    const { data: pageVideoCount } = useQuery<number, Error, number>({
-        queryKey: ['videoPageCount'],
-        queryFn: async () => 0,
-        staleTime: Infinity
-    })
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["videos", { pageIndex: pagination.pageIndex, pageSize: DefaultPagination.PageSize }],
+        queryFn: () => getVideos(pagination.pageIndex, DefaultPagination.PageSize),
+    });
 
     const handleOpenDialog = () => setState(DialogMode.Add);
+    const pageCount = Math.ceil((data?.totalPages ?? 0) / DefaultPagination.PageSize) || 1;
 
     return (
         <div className="container w-auto mx-auto py-5 flex flex-col gap-y-5">
@@ -43,8 +36,8 @@ export const VideoTableApp = () => {
 
             <BaseTable
                 columns={videoColumns()}
-                data={videos}
-                pageCount={Math.ceil((pageVideoCount ?? 0) / DefaultPagination.PageSize)}
+                data={data?.data ?? []}
+                pageCount={pageCount}
                 pagination={pagination}
                 onPaginationChange={onPaginationChange}
             />

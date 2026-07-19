@@ -1,5 +1,0 @@
-allowBuilds:
-  esbuild: false
-  ffmpeg-static: true
-  sharp: true
-  unrs-resolver: true

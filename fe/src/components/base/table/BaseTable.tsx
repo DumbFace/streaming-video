@@ -107,8 +107,11 @@ export const BaseTable = <TData, TValue>({
             <div className="flex items-center justify-center space-x-2 py-4">
 
                 <div className="flex w-fit items-center justify-center text-sm font-medium">
-                    Page {table.getState().pagination.pageIndex + 1} of{" "}
-                    {table.getPageCount()}
+                    <>
+                        Page {table.getState().pagination.pageIndex + 1} of{" "}
+                        {table.getPageCount()}
+                    </>
+
                 </div>
                 <Button
                     variant="outline"

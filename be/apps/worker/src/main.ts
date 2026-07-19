@@ -6,8 +6,3 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3005);
 }
 bootstrap();
-
-// {
-// "pattern": "video.slicing",
-// "data" :{"message":"Test"}
-// }

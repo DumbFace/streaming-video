@@ -1,33 +1,29 @@
-import { SidebarFooterApp } from "@/src/components/layout/side-bar-footer-app"
-import { SidebarHeaderApp } from "@/src/components/layout/side-bar-header-app"
+'use client'
+import { NavMain } from "@/src/components/layout/nav-bar"
 import {
-    Sidebar,
     SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupAction,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+
 } from "@/src/components/ui/sidebar"
-import { Plus } from "lucide-react"
+import { IconPlayerPlay } from "@tabler/icons-react"
+
+const data = {
+    navMain: [
+        {
+            title: "Video",
+            url: "/videos",
+            icon: IconPlayerPlay,
+        },
+    ],
+}
+
 
 export function SidebarContentApp() {
+
     return (
         <SidebarContent>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                        <a href="/videos">
-                            <span>Video</span>
-                        </a>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
+            <NavMain items={data.navMain} />
         </SidebarContent>
+
 
     )
 }

@@ -1,0 +1,19 @@
+services:
+  streaming-video-be:
+    image: kangfarmfun/streaming-video-be:latest
+
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+      CDN_SERVER: ${CDN_SERVER}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      MESSAGE_BROKER_URI: ${MESSAGE_BROKER_URI}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}

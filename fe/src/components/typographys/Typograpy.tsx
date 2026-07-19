@@ -34,5 +34,3 @@ export function TypographyP({ text }: TypographyComponentProps) {
 type TypographyComponentProps = {
   text: string;
 };
-
-//TODO Refactor later

@@ -84,6 +84,8 @@ export function FileUploadDirectUpload() {
             onFileReject={onFileReject}
             maxFiles={1}
             disabled={!!data?.id}
+            maxSize={100 * 1024 * 1024}
+            accept="video/mp4"
         >
             <FileUploadDropzone>
                 <div className="flex flex-col items-center gap-1 text-center">

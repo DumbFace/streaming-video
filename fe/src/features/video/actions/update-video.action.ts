@@ -1,11 +1,7 @@
-"use server";
-import { VideoFormValues } from "@/src/features/video/components/dialog";
-import ModelVideo from "@/src/features/video/models/video";
-import { useVideoDialogStore } from "@/src/features/video/shared/dialogStore";
-import connectDB from "@/src/lib/db";
-import { IVideo } from "@lib/shared/src/intefaces/video.interface";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+'use server';
+import { VideoFormValues } from '@/src/features/video/components/dialog';
+import ModelVideo from '@/src/features/video/models/video.schema';
+import connectDB from '@/src/lib/db';
 
 export const updateVideo = async (data: VideoFormValues, id: string) => {
   await connectDB();
@@ -20,7 +16,6 @@ export const updateVideo = async (data: VideoFormValues, id: string) => {
 
   return {
     success: true,
-    message: "Update Successfully",
-    data: JSON.parse(JSON.stringify(video)),
+    message: 'Update Successfully',
   };
 };
