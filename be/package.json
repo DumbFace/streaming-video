@@ -1,5 +1,5 @@
 {
-  "name": "web-api",
+  "name": "be",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -30,6 +30,7 @@
     "@nestjs/mongoose": "^11.0.4",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/serve-static": "^5.0.5",
+    "@streaming-video/shared": "workspace:*",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^2.0.1",
     "fluent-ffmpeg": "^2.1.3",

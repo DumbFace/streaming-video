@@ -1,6 +1,12 @@
 allowBuilds:
   bcrypt: true
-  esbuild: false
+  esbuild: true
   ffmpeg-static: true
+  protobufjs: true
   sharp: true
   unrs-resolver: true
+
+packages:
+  - "fe"
+  - "be"
+  - "shared"

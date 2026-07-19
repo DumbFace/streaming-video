@@ -1,20 +1,17 @@
-"use server";
-import { ModelUser } from "@/src/features/auth/models/user";
-import connectDB from "@/src/lib/db";
-import { LoginFormValues } from "@/src/features/auth/components/sign-in-form";
-import { IUser } from "@lib/shared/src/intefaces/user.interface";
-import { FlexibleFnResponse, FnResponse } from "@/src/lib/fn-response";
+'use server';
+import { ModelUser } from '@/src/features/auth/models/user';
+import connectDB from '@/src/lib/db';
+import { FlexibleFnResponse, FnResponse } from '@/src/lib/fn-response';
+import { IUser } from '@streaming-video/shared';
 
-export const getUserAction = async (
-  email: string,
-): Promise<FlexibleFnResponse<IUser>> => {
+export const getUserAction = async (email: string): Promise<FlexibleFnResponse<IUser>> => {
   await connectDB();
 
   const user = await ModelUser.findOne({
     email,
   }).lean();
 
-  if (!user) return FnResponse.Fail("Email is incorrect");
+  if (!user) return FnResponse.Fail('Email is incorrect');
 
-  return FnResponse.Succeed<IUser>("", user);
+  return FnResponse.Succeed<IUser>('', user);
 };

@@ -183,7 +183,7 @@ export default function VerifyOTPForm() {
                             )}
 
                         </CardContent>
-                        {/* 
+
                         <CardFooter className="flex flex-col space-y-4">
                             <Button className="w-full" type="submit" disabled={timeleft < 1 || isLoading}>
                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -198,7 +198,10 @@ export default function VerifyOTPForm() {
                                     className="text-primary hover:underline transition-colors disabled:opacity-50 font-medium"
                                     onClick={async () => {
                                         var response = await SendOTPForgotpasswordAction({ formData: { email } })
-                                        if (!response.success) console.warn(response.message);
+                                        if (!response.success) {
+                                            console.warn(response.message);
+                                            return;
+                                        };
                                         toast("Resend OTP successful");
                                         setTimeLeft(120);
                                     }}
@@ -210,7 +213,7 @@ export default function VerifyOTPForm() {
                             <div className="text-sm text-center text-muted-foreground mt-2">
                                 <Link href="/sign-in">&larr; Back to login</Link>
                             </div>
-                        </CardFooter> */}
+                        </CardFooter>
 
                     </form>
                 </FormProvider>

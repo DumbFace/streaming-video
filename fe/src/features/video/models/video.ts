@@ -1,6 +1,5 @@
-import { StatusVideo } from "@lib/shared/src/enums/video.enum";
-import mongoose, { Schema } from "mongoose";
-import { IVideo } from "@lib/shared/src/intefaces/video.interface";
+import mongoose, { Schema } from 'mongoose';
+import { IVideo, StatusVideo } from '@streaming-video/shared';
 
 const VideoSchema: Schema = new Schema<IVideo>(
   {
@@ -15,7 +14,6 @@ const VideoSchema: Schema = new Schema<IVideo>(
   { timestamps: true },
 );
 
-const ModelVideo =
-  mongoose.models.Video || mongoose.model<IVideo>("Video", VideoSchema);
+const ModelVideo = mongoose.models.Video || mongoose.model<IVideo>('Video', VideoSchema);
 
 export default ModelVideo;

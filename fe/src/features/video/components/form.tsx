@@ -65,11 +65,7 @@ export const VideoForm = () => {
 
     async function addVideo(formVideoData: VideoFormValues) {
         var response = await addVideoMuation.mutateAsync(formVideoData);
-        if (response?.success) {
-            toast(response.message);
-        } else {
-            console.error('Upload failed:', response);
-        }
+        toast(response.message);
     }
 
     async function updateVideo(formVideoData: z.infer<typeof videoFormSchema>) {

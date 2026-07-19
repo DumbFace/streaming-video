@@ -33,11 +33,7 @@ import { Video } from '@lib/shared/src/classes/video.class';
 import { StatusVideoSegment } from '@lib/shared/src/enums/video.enum';
 
 const s3 = new S3Client({
-  region: process.env.AWS_REGION || '',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  },
+  region: 'ap-southeast-1',
 });
 
 @Controller('videos')
@@ -56,8 +52,7 @@ export class VideoController {
         bucket: process.env.AWS_S3_BUCKET_NAME || '',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           callback(null, `videos/${uniqueSuffix}${ext}`);
         },
@@ -65,10 +60,7 @@ export class VideoController {
 
       fileFilter: (req, file, callback) => {
         if (!file.mimetype.match(/\/(mp4|mkv|quicktime|x-matroska)$/)) {
-          return callback(
-            new BadRequestException('Only video files are allowed!'),
-            false,
-          );
+          return callback(new BadRequestException('Only video files are allowed!'), false);
         }
         callback(null, true);
       },
@@ -145,7 +137,7 @@ export class VideoController {
     const dynamicClient: ClientProxy = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: [process.env.MESSAGEBROKER_URI as string],
+        urls: [process.env.MESSAGE_BROKER as string],
         exchange: 'video_processor_exchange',
         routingKey: '',
         exchangeType: 'fanout',

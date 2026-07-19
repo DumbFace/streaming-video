@@ -1,0 +1,22 @@
+{
+    // Bật tính năng format khi lưu
+    "editor.formatOnSave": true,
+    // Mặc định dùng Prettier làm formatter chính
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // Cấu hình ESLint để nó tự sửa lỗi khi lưu
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    // Nói cho ESLint biết đây là Monorepo và cần tìm config ở các thư mục con
+    "eslint.": [
+        {
+            "pattern": "fe"
+        },
+        {
+            "pattern": "be"
+        },
+        {
+            "pattern": "shared/*"
+        }
+    ]
+}

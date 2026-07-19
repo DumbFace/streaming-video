@@ -1,30 +1,36 @@
-import { ModelUser } from "@/src/features/auth/models/user";
-import connectDB from "@/src/lib/db";
-import { IUser } from "@lib/shared/src/intefaces/user.interface";
-import { IVideo } from "@lib/shared/src/intefaces/video.interface";
-import type { NextAuthConfig } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { ModelUser } from '@/src/features/auth/models/user';
+import connectDB from '@/src/lib/db';
+import type { NextAuthConfig } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authConfig = {
   pages: {
-    signIn: "/sign-in",
+    signIn: '/sign-in',
   },
+
   trustHost: true,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isPublicPage =
-        nextUrl.pathname === "/sign-in" ||
-        nextUrl.pathname === "/sign-up" ||
-        nextUrl.pathname === "/forgot-password" ||
-        nextUrl.pathname === "/verify-otp" ||
-        nextUrl.pathname === "/reset-password";
+        nextUrl.pathname === '/sign-in' ||
+        nextUrl.pathname === '/sign-up' ||
+        nextUrl.pathname === '/forgot-password' ||
+        nextUrl.pathname === '/verify-otp' ||
+        nextUrl.pathname === '/reset-password';
 
       if (isPublicPage && isLoggedIn) {
-        return Response.redirect(new URL("/", "http://localhost:3000"));
+        const url = nextUrl.clone();
+        url.pathname = '/';
+        console.log('url: ', url);
+        // const url = nextUrl.clone();
+        // nextUrl
+        // console.log('headers: ', url.options.headers);
+
+        return Response.redirect(url);
       }
 
       if (isPublicPage) return true;
@@ -57,7 +63,7 @@ export const authConfig = {
     // },
 
     async signIn({ user, account, profile, email, credentials }) {
-      if (account?.provider == "google") {
+      if (account?.provider == 'google') {
         await connectDB();
         const existsUser = await ModelUser.findOne({
           email: user.email,
@@ -67,7 +73,7 @@ export const authConfig = {
 
         if (!existsUser) {
           if (!user.email || !user.name) {
-            console.error("User email or User name must not null or undefine");
+            console.error('User email or User name must not null or undefine');
             return false;
           }
 

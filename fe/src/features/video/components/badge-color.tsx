@@ -1,4 +1,5 @@
-import { StatusVideo } from "@lib/shared/src/enums/video.enum";
+
+import { StatusVideo } from "@streaming-video/shared";
 
 export const StatusVideoClass: Record<StatusVideo, string> = {
     [StatusVideo.processing]: "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300",

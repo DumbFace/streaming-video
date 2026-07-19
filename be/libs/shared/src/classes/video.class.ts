@@ -2,7 +2,7 @@ import { Schema, Prop } from '@nestjs/mongoose';
 import { VideoSegment } from '@lib/shared/src/classes/video-segment.class';
 import { StatusVideo } from '@lib/shared/src/enums/video.enum';
 import { VideoSegmentSchema } from '@lib/shared/src/schemas/video-segment.schema';
-import { IVideo } from '@lib/shared/src/intefaces/video.interface';
+import { IVideo } from '@streaming-video/shared';
 
 @Schema({ timestamps: true })
 export class Video implements IVideo {

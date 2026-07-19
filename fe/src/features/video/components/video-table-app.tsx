@@ -7,7 +7,7 @@ import { videoColumns } from '@/src/features/video/columns/columns'
 import VideoDialog from '@/src/features/video/components/dialog'
 import { DefaultPagination } from '@/src/features/video/constants/pagination.constant'
 import { DialogMode, useVideoDialogStore } from '@/src/features/video/shared/dialogStore'
-import { IVideo } from '@lib/shared/src/intefaces/video.interface'
+import { IVideo } from '@streaming-video/shared'
 import { useQuery } from '@tanstack/react-query'
 
 import { CirclePlus } from 'lucide-react'

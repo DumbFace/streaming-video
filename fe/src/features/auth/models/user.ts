@@ -1,6 +1,5 @@
-import { addWeeks } from "date-fns";
-import mongoose, { Model, Schema } from "mongoose";
-import { IUser } from "@lib/shared/src/intefaces/user.interface";
+import { IUser } from '@streaming-video/shared';
+import mongoose, { Model, Schema } from 'mongoose';
 
 const userSchema = new Schema<IUser>(
   {
@@ -14,4 +13,4 @@ const userSchema = new Schema<IUser>(
 );
 
 export const ModelUser = (mongoose.models.User ||
-  mongoose.model<IUser>("User", userSchema)) as Model<IUser>;
+  mongoose.model<IUser>('User', userSchema)) as Model<IUser>;

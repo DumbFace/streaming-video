@@ -1,14 +1,16 @@
-import type { NextConfig } from "next";
-import path, { join } from "path";
+import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: 'standalone',
   devIndicators: false,
-
-  transpilePackages: ["@lib/shared/src/*"],
-
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '1gb',
+    },
+  },
   turbopack: {
-    root: path.join(__dirname, ".."),
+    root: path.join(__dirname, '..'),
   },
 };
 export default nextConfig;

@@ -5,17 +5,9 @@ import * as fs from 'fs';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose/dist';
 import { Video } from '@lib/shared/src/classes/video.class';
-import {
-  AmqpConnection,
-  Nack,
-  RabbitMQModule,
-  RabbitSubscribe,
-} from '@golevelup/nestjs-rabbitmq';
+import { AmqpConnection, Nack, RabbitMQModule, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import * as amqplib from 'amqplib';
-import {
-  StatusVideo,
-  StatusVideoSegment,
-} from '@lib/shared/src/enums/video.enum';
+import { StatusVideo, StatusVideoSegment } from '@lib/shared/src/enums/video.enum';
 
 import { NotFound, S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
@@ -31,10 +23,6 @@ export class WorkerService {
 
   s3 = new S3Client({
     region: process.env.AWS_REGION || '',
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-    },
   });
   bucketName = process.env.AWS_S3_BUCKET_NAME;
 
@@ -71,10 +59,7 @@ export class WorkerService {
         .output(outputFile)
         .on('end', async () => {
           this.logger.log('Video successfully split into HLS chunks!');
-          const outputFile = path.join(
-            outputDirectory,
-            `chunk_${data.index}.ts`,
-          );
+          const outputFile = path.join(outputDirectory, `chunk_${data.index}.ts`);
           const duration = await new Promise((resolve, reject) => {
             ffmpeg.ffprobe(outputFile, (err, metadata) => {
               if (err) {
@@ -156,8 +141,7 @@ export class WorkerService {
     queue: 'test.queue',
   })
   async test(data: any, amqpMsg: amqplib.ConsumeMessage) {
-    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ??
-      0) as number;
+    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ?? 0) as number;
 
     try {
       throw new NotFoundException('Test error queue!!!!!!!!!!!!!!!');
@@ -189,8 +173,7 @@ export class WorkerService {
     queue: 'video.slicing.queue',
   })
   public async processVideo(data: any, amqpMsg: amqplib.ConsumeMessage) {
-    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ??
-      0) as number;
+    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ?? 0) as number;
     try {
       console.log('data: ', data);
       console.log('amqpMsg: ', amqpMsg);
@@ -222,13 +205,9 @@ export class WorkerService {
           order: Number(data.index + 1),
         });
 
-        this.amqpConnection.publish(
-          'video.producing.master.file.exchange',
-          '',
-          {
-            videoId: data.videoId,
-          },
-        );
+        this.amqpConnection.publish('video.producing.master.file.exchange', '', {
+          videoId: data.videoId,
+        });
 
         console.log('Acknowledge video ', data.index);
       }
@@ -258,12 +237,8 @@ export class WorkerService {
     routingKey: '',
     queue: 'video.producing.master.file.queue',
   })
-  public async videoProducingMasterFile(
-    data: any,
-    amqpMsg: amqplib.ConsumeMessage,
-  ) {
-    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ??
-      0) as number;
+  public async videoProducingMasterFile(data: any, amqpMsg: amqplib.ConsumeMessage) {
+    const retryCount = (amqpMsg.properties.headers?.['x-retry-count'] ?? 0) as number;
     try {
       console.log('ProducingMasterFle receives message');
       var video = await this.findById(data.videoId);
@@ -299,9 +274,7 @@ export class WorkerService {
         partSize: 1024 * 1024 * 5,
       });
       parallelUploadToS3.on('httpUploadProgress', (progress) => {
-        console.log(
-          `Uploaded ${progress.loaded} out of ${progress.total} bytes`,
-        );
+        console.log(`Uploaded ${progress.loaded} out of ${progress.total} bytes`);
       });
       var result = await parallelUploadToS3.done();
       await this.update(data.videoId, {
@@ -312,29 +285,19 @@ export class WorkerService {
     } catch (error: any) {
       console.error('Processing failed', error);
       if (retryCount < 3) {
-        this.amqpConnection.publish(
-          'video.producing.master.file.exchange',
-          '',
-          data,
-          {
-            headers: { 'x-retry-count': retryCount + 1, 'x-delay': 5000 },
-          },
-        );
+        this.amqpConnection.publish('video.producing.master.file.exchange', '', data, {
+          headers: { 'x-retry-count': retryCount + 1, 'x-delay': 5000 },
+        });
         return;
       }
 
-      this.amqpConnection.publish(
-        'video.producing.master.file.error.exchange',
-        '',
-        data,
-        {
-          headers: {
-            'x-retry-count': retryCount,
-            'x-exception-message': error.message,
-            'x-exception-stack': error.stack,
-          },
+      this.amqpConnection.publish('video.producing.master.file.error.exchange', '', data, {
+        headers: {
+          'x-retry-count': retryCount,
+          'x-exception-message': error.message,
+          'x-exception-stack': error.stack,
         },
-      );
+      });
 
       return new Nack(false);
     }

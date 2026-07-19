@@ -72,9 +72,8 @@ export function LoginForm({
         toast(response.message);
 
         await update();
-
+        console.log("callbackUrl: ", callbackUrl);
         router.push(callbackUrl);
-
     }
 
     const handleSignInUsingGoogle = async () => {

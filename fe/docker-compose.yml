@@ -6,19 +6,49 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongo_pass
       MONGO_INITDB_DATABASE: streaming_video
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - mongo_data:/data/db
+
   redis:
     image: redis:7-alpine
     restart: always
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
-
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: dockerfile-rabbitmq
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+      - '15692:15692'
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    restart: always
+    ports:
+      - '80:80'
+    environment:
+      - NODE_URL="192.168.1.236:3000"
+      - NGINX_URL="kangfarmfun-Modern-14-B11MOU"
+    volumes:
+      - ./public:/var/www/streaming-video/fe/public
+      - ./.next/static:/var/www/streaming-video/fe/.next/static
+      - ./nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
 volumes:
   mongo_data:
-
   redis_data:
+  rabbitmq-data:

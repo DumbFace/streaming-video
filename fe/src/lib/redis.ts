@@ -1,6 +1,6 @@
-import Redis from "ioredis";
+import Redis from 'ioredis';
 
-const redisUri = "redis://127.0.0.1:6379";
+const redisUri = process.env.CACHER_URI as string;
 
 const redis = new Redis(redisUri);
 

@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 import { Spinner } from "@/src/components/ui/spinner"
 import { ErrorCodes } from "@/src/features/auth/constants/errorCode"
 import Link from "next/link"
+import { signIn } from "next-auth/react"
 
 
 const signUpFormSchema = z
@@ -62,6 +63,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     }, [])
 
 
+    const handleSignInUsingGoogle = async () => {
+        signIn("google");
+    }
 
     const handleSubmit = async (formData: SignInFormValues) => {
         console.log("formData: ", formData);
@@ -71,7 +75,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         } else {
             switch (response.exception?.code) {
                 case ErrorCodes.DuplicateUnique:
-                    // form.setError({ "email", { type: "validate", message: "Email is existed, Please use another" } })
                     form.setError("email", {
                         type: "validate",
                         message: "Email is existed, Please use another"
@@ -82,7 +85,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             }
         }
     }
-
 
     return (
         <FormProvider {...form}>
@@ -137,10 +139,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                             </Field>
                             <FieldGroup>
                                 <Field>
-                                    <Button type="submit">
-                                        {createUserMuation.isPending ? <Spinner></Spinner> : "Create Account"}
+                                    <Button type="submit" disabled={createUserMuation.isPending}>
+                                        {createUserMuation.isPending && <Spinner></Spinner>} Create Account
                                     </Button>
-                                    <Button variant="outline" type="button" disabled={createUserMuation.isPending}>
+                                    <Button variant="outline" type="button" onClick={handleSignInUsingGoogle} disabled={createUserMuation.isPending}>
                                         Sign up with Google
                                     </Button>
                                     <FieldDescription className="px-6 text-center">

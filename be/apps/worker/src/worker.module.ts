@@ -72,7 +72,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
         },
       ],
       prefetchCount: 1,
-      uri: process.env.MESSAGEBROKER_URI as string,
+      uri: process.env.MESSAGE_BROKER as string,
       connectionInitOptions: { wait: false },
       deserializer: (message: Buffer, amqpMsg: any) => {
         const msgString = message.toString();

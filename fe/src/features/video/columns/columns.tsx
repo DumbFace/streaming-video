@@ -6,8 +6,7 @@ import { Progress } from "@/src/components/ui/progress";
 import { StatusVideoClass } from "@/src/features/video/components/badge-color";
 import { VideoFormData } from "@/src/features/video/components/dialog";
 import { DialogMode, useVideoDialogStore } from "@/src/features/video/shared/dialogStore";
-import { StatusVideo } from "@lib/shared/src/enums/video.enum";
-import { IVideo } from "@lib/shared/src/intefaces/video.interface";
+import { IVideo, StatusVideo } from "@streaming-video/shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from 'date-fns';
 import { Link2, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
@@ -45,7 +44,7 @@ export const videoColumns = (): ColumnDef<IVideo>[] => {
       cell: ({ row }) => {
         const statusValue = row.original.status;
         const statusValueAsString = StatusVideo[statusValue].toUpperCase();
-        return <Badge className={StatusVideoClass[statusValue]}>{statusValueAsString}</Badge>;
+        return <Badge className={StatusVideoClass[statusValue as StatusVideo]}>{statusValueAsString}</Badge>;
       },
     },
     {

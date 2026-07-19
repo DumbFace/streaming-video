@@ -10,15 +10,11 @@ import {
     CardTitle,
 } from "@/src/components/ui/card";
 import Link from "next/link";
-import { generateOTP } from "@/src/lib/utils";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldLabel } from "@/src/components/ui/field";
-import redis from "@/src/lib/redis";
 import { useRouter } from 'next/navigation';
-import { setEx } from "@/src/features/auth/actions/caching.action";
-import { RedisPrefix } from "@/src/features/auth/constants/redis-prefix";
 import { SendOTPForgotpasswordAction } from "@/src/features/auth/actions/send-otp-forgot-password.action";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -51,8 +47,7 @@ export default function ForgotPasswordForm() {
 
         const response = await sendMailMutation.mutateAsync(formData);
 
-
-        if (!response.success) console.warn(response.exception?.message)
+        if (!response.success) { console.warn(response.exception?.message); return; }
 
         router.push(`/verify-otp?email=${formData.email}`)
     };

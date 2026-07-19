@@ -1,17 +1,16 @@
-"use server";
-import { setEx } from "@/src/features/auth/actions/caching.action";
-import { ForgotPasswordFormValues } from "@/src/features/auth/components/forgot-password-form";
-import { RedisPrefix } from "@/src/features/auth/constants/redis-prefix";
-import { FnResponse } from "@/src/lib/fn-response";
-import { generateOTP } from "@/src/lib/utils";
-import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { _success } from "zod/v4/core";
+'use server';
+import { setEx } from '@/src/features/auth/actions/caching.action';
+import { ForgotPasswordFormValues } from '@/src/features/auth/components/forgot-password-form';
+import { RedisPrefix } from '@/src/features/auth/constants/redis-prefix';
+import { FnResponse } from '@/src/lib/fn-response';
+import { generateOTP } from '@/src/lib/utils';
+import nodemailer from 'nodemailer';
+import { _success } from 'zod/v4/core';
 
 export async function SendMail({
   to = [],
-  subject = "",
-  body = "",
+  subject = '',
+  body = '',
   signal,
 }: {
   to?: string[];
@@ -26,7 +25,7 @@ export async function SendMail({
   const password = process.env.SMTP_PASSWORD;
 
   if (!server || !port || !from || !defaultTo) {
-    throw new Error("Cannot read config or config null");
+    throw new Error('Cannot read config or config null');
   }
 
   const transporter = nodemailer.createTransport({
@@ -38,7 +37,7 @@ export async function SendMail({
     },
   });
 
-  const recipients = to.length > 0 ? to.join(", ") : defaultTo;
+  const recipients = to.length > 0 ? to.join(', ') : defaultTo;
 
   const mailOptions = {
     from: from,
@@ -57,12 +56,14 @@ export async function SendOTPForgotpasswordAction({
 }) {
   try {
     const otp = generateOTP();
-    // await SendMail({
-    //   to: [formData.email],
-    //   subject: "OTP",
-    //   body: otp,
-    // });
-    console.log("otp: ", otp);
+
+    await SendMail({
+      to: [formData.email],
+      subject: 'OTP',
+      body: otp,
+    });
+
+    console.log('otp: ', otp);
     const response = await setEx({
       prefix: RedisPrefix.FORGOT_PASSWORD,
       key: formData.email,
@@ -70,12 +71,12 @@ export async function SendOTPForgotpasswordAction({
       data: { email: formData.email, otp: otp },
     });
 
-    if (!response.success) return FnResponse.Fail("There is something wrong!");
+    if (!response.success) return FnResponse.Fail('There is something wrong!');
 
-    return FnResponse.Succeed<void>("Send OTP successful", undefined);
+    return FnResponse.Succeed<void>('Send OTP successful', undefined);
   } catch (err) {
     const error = err as Error;
-    return FnResponse.Fail("Send OTP unsuccessful", {
+    return FnResponse.Fail('Send OTP unsuccessful', {
       name: error.name,
       message: error.message,
       code: 0,
