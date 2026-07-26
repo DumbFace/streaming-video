@@ -1,29 +1,15 @@
 import { Body, Controller, Get } from '@nestjs/common';
 
-import { S3Client } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
-import path from 'path';
 
 import { WorkerService } from './worker.service';
-
-const s3 = new S3Client({
-  region: process.env.AWS_REGION || '',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  },
-});
-const bucketName = process.env.AWS_S3_BUCKET_NAME;
 
 @Controller('worker')
 export class WorkerController {
   constructor(private readonly workerService: WorkerService) {}
 
   @Get()
-  async slicingVideo(
-    @Body('videoUrl') videoUrl: string,
-    @Body('index') index: number,
-  ) {
+  async slicingVideo(@Body('videoUrl') videoUrl: string, @Body('index') index: number) {
     var result = await this.workerService.sliceVideoAsync({
       videoUrl: videoUrl ?? '/home/kangfarmfun/Videos/video.mp4',
       index: index ?? 0,
@@ -33,14 +19,8 @@ export class WorkerController {
   }
 
   @Get('uploadVideo')
-  async uploadVideo(
-    @Body('videoUrl') videoUrl: string,
-    @Body('key') key: string,
-  ) {
-    var result = await this.workerService.uploadChunk(
-      { videoFilePath: videoUrl },
-      `videos/${key}`,
-    );
+  async uploadVideo(@Body('videoUrl') videoUrl: string, @Body('key') key: string) {
+    var result = await this.workerService.uploadChunk({ videoFilePath: videoUrl }, `videos/${key}`);
 
     return result;
   }

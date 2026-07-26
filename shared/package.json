@@ -2,5 +2,11 @@
   "name": "@streaming-video/shared",
   "version": "1.0.0",
   "main": "index.ts",
-  "types": "index.ts"
+  "types": "index.ts",
+  "dependencies": {
+    "sst": "4.17.1"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.162"
+  }
 }

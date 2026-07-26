@@ -4,7 +4,14 @@
 /* deno-fmt-ignore-file */
 /* biome-ignore-all lint: auto-generated */
 
-/// <reference path="../sst-env.d.ts" />
+declare module "sst" {
+  export interface Resource {
+    "MyWeb": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
+  }
+}
 
 import "sst"
 export {}

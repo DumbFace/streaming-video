@@ -39,6 +39,6 @@
     "node_modules",
     "**/node_modules",
     ".next/cache",
-    "dist"
+    "dist","sst.config.ts"
   ]
 }

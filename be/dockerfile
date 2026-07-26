@@ -2,35 +2,38 @@ FROM node:20-alpine AS base
 RUN npm install -g pnpm
 
 FROM base AS deps
-
 WORKDIR /app
-COPY be/package.json  ./fe/
-COPY shared/package.json  ./shared/
 
+COPY be/package.json ./be/
+COPY shared/package.json ./shared/
 COPY pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN CI=true 
-RUN pnpm install
 
-COPY fe ./fe
-COPY shared ./shared
+RUN CI=true 
+RUN pnpm install 
 
 FROM base AS builder
 WORKDIR /app
+
 COPY --from=deps /app ./
+COPY be ./be
+COPY shared ./shared
 
-WORKDIR /app/fe
+WORKDIR /app/be
+RUN pnpm build worker
 
-RUN pnpm build
+RUN CI=true pnpm prune --prod
 
 FROM base AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
 ENV PORT=3000
 
-COPY --from=builder /app/fe/.next/ ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/be/node_modules ./be/node_modules
 
-COPY --from=builder /app/fe/public ./public
+COPY --from=builder /app/be/dist ./be/dist
+COPY --from=builder /app/be/package.json ./be/package.json
 
-EXPOSE 3000
-
-CMD ["node", "standalone/fe/server.js"]
+WORKDIR /app/be
+CMD ["node", "dist/apps/worker/apps/worker/src/main.js"]
