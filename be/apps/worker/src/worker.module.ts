@@ -1,78 +1,101 @@
 import { Module } from '@nestjs/common';
 import { WorkerController } from './worker.controller';
 import { WorkerService } from './worker.service';
-import { SharedModule } from '@lib/shared/src';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { SharedModule } from '@lib/src';
 
 @Module({
   imports: [
     RabbitMQModule.forRoot({
       exchanges: [
         {
-          name: 'video.slicing.exchange',
-          type: 'x-delayed-message',
-          options: {
-            arguments: {
-              'x-delayed-type': 'fanout',
-            },
-          },
+          name: 'video.slicing.main.exchange',
+          type: 'direct',
+        },
+        {
+          name: 'video.slicing.wait.exchange',
+          type: 'direct',
         },
         {
           name: 'video.slicing.error.exchange',
-          type: 'fanout',
+          type: 'direct',
+        },
+
+        {
+          name: 'video.producing.master.main.exchange',
+          type: 'direct',
         },
         {
-          name: 'video.producing.master.file.exchange',
-          type: 'x-delayed-message',
-          options: {
-            arguments: {
-              'x-delayed-type': 'fanout',
-            },
-          },
+          name: 'video.producing.master.wait.exchange',
+          type: 'direct',
         },
         {
           name: 'video.producing.master.error.exchange',
-          type: 'fanout',
-        },
-        {
-          name: 'test.exchange',
-          type: 'x-delayed-message',
-          options: {
-            arguments: {
-              'x-delayed-type': 'fanout',
-            },
-          },
-        },
-        {
-          name: 'test.error.exchange',
-          type: 'fanout',
+          type: 'direct',
         },
       ],
       queues: [
         {
-          name: 'video.slicing.error.queue',
-          routingKey: '',
-          exchange: 'video.slicing.error.exchange',
+          name: 'video.slicing.main.queue',
+          exchange: 'video.slicing.main.exchange',
+          routingKey: 'video.slicing.main.route',
+          options: {
+            durable: true,
+            deadLetterExchange: 'video.slicing.error.exchange',
+            deadLetterRoutingKey: 'video.slicing.error.route',
+          },
         },
         {
-          name: 'test.error.queue',
-          routingKey: '',
-          exchange: 'test.error.exchange',
+          name: 'video.slicing.wait.queue',
+          exchange: 'video.slicing.wait.exchange',
+          routingKey: 'video.slicing.wait.route',
+          options: {
+            durable: true,
+            messageTtl: 5000,
+            deadLetterExchange: 'video.slicing.main.exchange',
+            deadLetterRoutingKey: 'video.slicing.main.route',
+          },
+        },
+        {
+          name: 'video.slicing.error.queue',
+          exchange: 'video.slicing.error.exchange',
+          routingKey: 'video.slicing.error.route',
+          options: { durable: true },
+        },
+
+        {
+          name: 'video.producing.master.main.queue',
+          exchange: 'video.producing.master.main.exchange',
+          routingKey: 'video.producing.master.main.route',
+          options: {
+            durable: true,
+            deadLetterExchange: 'video.producing.master.error.exchange',
+            deadLetterRoutingKey: 'video.producing.master.error.route',
+          },
+        },
+        {
+          name: 'video.producing.master.wait.queue',
+          exchange: 'video.producing.master.wait.exchange',
+          routingKey: 'video.producing.master.wait.route',
+          options: {
+            durable: true,
+            messageTtl: 5000,
+            deadLetterExchange: 'video.producing.master.main.exchange',
+            deadLetterRoutingKey: 'video.producing.master.main.route',
+          },
         },
         {
           name: 'video.producing.master.error.queue',
-          routingKey: '',
           exchange: 'video.producing.master.error.exchange',
-        },
-        {
-          name: 'video.slicing.error.queue',
-          routingKey: '',
-          exchange: 'video.slicing.error.exchange',
+          routingKey: 'video.producing.master.error.route',
+          options: { durable: true },
         },
       ],
       prefetchCount: 1,
-      uri: process.env.MESSAGEBROKER_URI as string,
+      uri: process.env.MESSAGE_BROKER_URI as string,
       connectionInitOptions: { wait: false },
       deserializer: (message: Buffer, amqpMsg: any) => {
         const msgString = message.toString();
@@ -94,6 +117,13 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
       useFactory: async () => ({
         uri: process.env.DATABASE_URI,
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public'),
+      // serveRoot: '/public',
+      serveStaticOptions: {
+        fallthrough: false,
+      },
     }),
   ],
   controllers: [WorkerController],

@@ -1,0 +1,34 @@
+{
+  "name": "@streaming-video/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cloud-infras/*": "./cloud-infras/*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "mongoose": "^9.7.3"
+  },
+  "devDependencies": {
+    "@pulumi/aws": "^7.40.0",
+    "@pulumi/cloudamqp": "^3.31.0",
+    "@pulumi/cloudflare": "^6.18.0",
+    "@pulumi/mongodbatlas": "^4.13.0",
+    "@pulumi/pulumi": "^3.255.0",
+    "@types/aws-lambda": "8.10.162",
+    "@types/node": "^24.0.0",
+    "@upstash/pulumi": "^0.5.0",
+    "sst": "4.17.1",
+    "typescript": "^7.0.2"
+  }
+}

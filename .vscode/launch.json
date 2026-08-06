@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Next.js: Debug Server",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm dev --inspect"
+        },
+        {
+            "name": "Next.js: Debug Client",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/fe"
+        },
+        {
+            "name": "Next.js: Debug Fullstack",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm --filter fe dev ",
+            "serverReadyAction": {
+                "pattern": "- Local:?\\s+(https?://localhost:\\d+)",
+                "uriFormat": "%s",
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Next.js: Debug Client + Server",
+            "configurations": [
+                "Next.js: Debug Server",
+                "Next.js: Debug Client"
+            ],
+            "stopAll": true
+        }
+    ]
+}

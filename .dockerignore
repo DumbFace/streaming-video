@@ -1,0 +1,11 @@
+be/node_modules
+be/dist
+be/.next
+
+fe/.next
+fe/node_modules
+
+
+
+# sst
+.sst

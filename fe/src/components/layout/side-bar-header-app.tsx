@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
 import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/src/components/ui/sidebar";
+import { IconDeviceTv } from "@tabler/icons-react";
 
 export function SidebarHeaderApp() {
 
@@ -9,17 +10,10 @@ export function SidebarHeaderApp() {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <SidebarMenuButton>
-                                Select Workspace
-                                <ChevronDown className="ml-auto" />
-                            </SidebarMenuButton>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                            <DropdownMenuItem>
-                                <span>Acme Inc</span>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
+                        <SidebarMenuButton>
+                            STREAMING VIDEO
+                            <IconDeviceTv className="ml-auto" />
+                        </SidebarMenuButton>
                     </DropdownMenu>
                 </SidebarMenuItem>
             </SidebarMenu>

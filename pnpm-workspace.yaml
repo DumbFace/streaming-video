@@ -1,0 +1,15 @@
+injectWorkspacePackages: true
+allowBuilds:
+  bcrypt: true
+  cpu-features: true
+  esbuild: true
+  ffmpeg-static: true
+  protobufjs: true
+  sharp: true
+  ssh2: true
+  unrs-resolver: true
+
+packages:
+  - "fe"
+  - "be"
+  - "shared"

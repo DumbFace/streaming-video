@@ -1,17 +1,13 @@
-import { create } from "zustand";
-import { VideoFormData } from "../components/dialog";
-import { Dialog } from "radix-ui";
-import { DefaultPagination } from "@/src/features/video/constants/pagination.constant";
-import {
-  PaginationDefaultOptions,
-  PaginationTableState,
-} from "@tanstack/react-table";
+import { create } from 'zustand';
+import { DefaultPagination } from '@/src/features/video/constants/pagination.constant';
+import { PaginationDefaultOptions, PaginationTableState } from '@tanstack/react-table';
+import { VideoFormData } from '@/src/features/video/components/dialog';
 
 export const DialogMode = {
-  Add: "add",
-  Edit: "edit",
-  Delete: "delete",
-  Close: "close",
+  Add: 'add',
+  Edit: 'edit',
+  Delete: 'delete',
+  Close: 'close',
 } as const;
 
 export type DialogModeType = (typeof DialogMode)[keyof typeof DialogMode];
@@ -40,10 +36,9 @@ export const useVideoDialogStore = create<DialogVideoState>((set) => ({
   onPaginationChange: (newPagination) =>
     set((state) => ({
       pagination:
-        typeof newPagination === "function"
-          ? newPagination(state.pagination)
-          : newPagination,
+        typeof newPagination === 'function' ? newPagination(state.pagination) : newPagination,
     })),
+
   setData: (newData) =>
     set(() => {
       return { data: newData };

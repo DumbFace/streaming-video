@@ -1,11 +1,14 @@
 
+
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/src/components/ui/sidebar";
 import { SideBarApp } from "@/src/components/layout";
-import QueryProvider from "@/src/app/providers/provider";
+import QueryProvider from "@/src/app/providers/query-provider";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react"
+import { Providers } from "@/src/app/providers/session-provider";
 
 
 const inter = Inter({
@@ -34,23 +37,21 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
       <body>
-        <SidebarProvider>
+        <Providers>
+          <SidebarProvider>
+            <SideBarApp />
+            <SidebarInset>
+              <SidebarTrigger />
+              <Toaster />
+              <main>
+                <QueryProvider>
 
-          <SideBarApp />
-
-          <SidebarInset>
-            <SidebarTrigger />
-            <Toaster />
-
-            <main>
-              <QueryProvider>
-                {children}
-              </QueryProvider>
-            </main>
-          </SidebarInset>
-
-        </SidebarProvider>
-
+                  {children}
+                </QueryProvider>
+              </main>
+            </SidebarInset>
+          </SidebarProvider>
+        </Providers>
       </body>
     </html>
   );

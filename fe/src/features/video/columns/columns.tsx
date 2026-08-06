@@ -3,17 +3,17 @@ import { Button } from "@/src/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
 import { Field, FieldLabel } from "@/src/components/ui/field";
 import { Progress } from "@/src/components/ui/progress";
+import { VideoAggregate } from "@/src/features/video/actions/get-videos.action";
 import { StatusVideoClass } from "@/src/features/video/components/badge-color";
 import { VideoFormData } from "@/src/features/video/components/dialog";
 import { DialogMode, useVideoDialogStore } from "@/src/features/video/shared/dialogStore";
-import { StatusVideo } from "@lib/shared/src/enums/video.enum";
-import { IVideo } from "@lib/shared/src/intefaces/video.interface";
+import { IVideo, StatusVideo } from "@streaming-video/shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from 'date-fns';
 import { Link2, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
 
-export const videoColumns = (): ColumnDef<IVideo>[] => {
+export const videoColumns = (): ColumnDef<VideoAggregate>[] => {
   const { setState, setData } = useVideoDialogStore((store) => store);
 
   return [
@@ -35,8 +35,10 @@ export const videoColumns = (): ColumnDef<IVideo>[] => {
       accessorKey: "masterPlaylistUrl",
       header: "Url".toUpperCase(),
       cell: ({ row }) => {
-        const url = row.original.masterPlaylistUrl;
-        return url ? (<Link href={url}> <Link2 /> </Link>) : (<></>)
+        if (!row.original.masterPlaylistUrl) return;
+        const path = row.original.directory;
+
+        return <Link href={path}> <Link2 /> </Link>
       }
     },
     {
@@ -45,7 +47,7 @@ export const videoColumns = (): ColumnDef<IVideo>[] => {
       cell: ({ row }) => {
         const statusValue = row.original.status;
         const statusValueAsString = StatusVideo[statusValue].toUpperCase();
-        return <Badge className={StatusVideoClass[statusValue]}>{statusValueAsString}</Badge>;
+        return <Badge className={StatusVideoClass[statusValue as StatusVideo]}>{statusValueAsString}</Badge>;
       },
     },
     {
@@ -53,9 +55,13 @@ export const videoColumns = (): ColumnDef<IVideo>[] => {
       header: "Progress".toUpperCase(),
       cell: ({ row }) => {
         const totalChunk = row.original.totalChunks;
-        const currentProgress = row.original.segments?.length ?? 0;
+        const currentProgress = row.original.segmentsCount;
 
         const data = Math.round(currentProgress / totalChunk * 100);
+        console.log("data ", data);
+        console.log("currentProgress ", currentProgress);
+        console.log("totalChunk ", totalChunk);
+
         return (
           <Field className="w-full max-w-sm">
             <FieldLabel htmlFor="progress-upload">

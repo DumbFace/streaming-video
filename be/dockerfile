@@ -1,0 +1,31 @@
+FROM node:20-alpine AS base
+RUN npm install -g pnpm
+
+FROM base AS builder
+WORKDIR /app
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY be/package.json ./be/
+COPY shared/package.json ./shared/
+
+RUN pnpm --filter=be i
+RUN pnpm --filter=shared i
+
+COPY be ./be
+COPY shared ./shared
+
+RUN pnpm --filter=shared build
+RUN pnpm --filter=be build worker
+
+RUN pnpm --filter=be deploy --prod /app/deploy
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+
+RUN apk add --no-cache ffmpeg
+
+COPY --from=builder /app/deploy/node_modules ./node_modules
+COPY --from=builder /app/be/dist ./dist
+
+CMD ["node", "dist/apps/worker/apps/worker/src/main.js"]

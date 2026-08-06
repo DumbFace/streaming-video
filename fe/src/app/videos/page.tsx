@@ -3,8 +3,9 @@ import getQueryClient from "@/src/app/getQueryClient";
 import { getVideos } from "@/src/features/video/actions/get-videos.action";
 import { VideoTableApp } from "@/src/features/video/components/video-table-app";
 import { DefaultPagination } from "@/src/features/video/constants/pagination.constant";
-import ModelVideo from "@/src/features/video/models/video";
+import ModelVideo from "@/src/features/video/models/video.schema";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 export default async function VideoListPage() {
     const queryClient = getQueryClient();

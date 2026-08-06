@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "outDir": "dist",
+        "declaration": true,
+        "noEmit": false,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": true
+    },
+    "include": [
+        "sst.config.ts",
+        "src",
+        "cloud-infras/**/*.ts",
+        ".sst/platform/**/*.d.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "../fe",
+        "../be"
+    ]
+}
