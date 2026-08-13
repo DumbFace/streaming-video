@@ -1,10 +1,8 @@
+export default function Home() {
 
-export default async function Home() {
-
-  console.log("test")
   return (
-    <div>
-
-    </div>
+    <>
+      <h1>test</h1>
+    </>
   );
 }

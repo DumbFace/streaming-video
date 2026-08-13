@@ -8,12 +8,8 @@
     "dev": "next dev --turbo",
     "lint": "eslint",
     "start": "next start",
-    "test": "jest",
-    "test:unit": "jest src --runInBand",
-    "test:integration": "jest test/integration --runInBand",
+    "test": "NODE_ENV=development jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:before-build": "pnpm test:unit && pnpm test:integration",
     "build:safe": "pnpm test:before-build && next build"
   },
   "dependencies": {
@@ -63,9 +59,14 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@jest/globals": "^30.4.1",
     "@pulumi/cloudflare": "^6.18.0",
     "@tailwindcss/postcss": "^4",
     "@testcontainers/mongodb": "^12.0.4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.3",
     "@types/amqplib": "^0.10.8",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
@@ -84,6 +85,7 @@
     "tailwindcss": "^4",
     "testcontainers": "^12.0.4",
     "ts-jest": "^29.4.12",
+    "ts-node": "^10.9.2",
     "tsx": "^4.22.4",
     "typescript": "^5"
   }
