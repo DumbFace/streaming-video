@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Sse, UseGuards } from '@nestjs/common';
 
 import * as fs from 'fs';
 
@@ -31,14 +31,11 @@ export class WorkerController {
   async crashRAM(@Body('path') path: string) {
     console.log('Bắt đầu nạp video vào RAM...');
 
-    // fs.readFile sẽ cào TOÀN BỘ dữ liệu của file ở ổ cứng
-    // và nhồi nhét tất cả vào một biến duy nhất (data) nằm trên RAM.
     fs.readFile(path, (err, data) => {
       if (err) {
         console.log('Lỗi:', err);
         return;
       }
-      // Đoạn code này sẽ KHÔNG BAO GIỜ chạy tới được nếu file quá 2GB
       console.log('Đã nạp xong! Kích thước data:', data.length);
     });
   }

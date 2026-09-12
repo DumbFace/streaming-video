@@ -1,42 +1,42 @@
 {
-    "compilerOptions": {
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
-        "esModuleInterop": true,
-        "isolatedModules": true,
-        "declaration": true,
-        "removeComments": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "target": "ES2023",
-        "sourceMap": true,
-        "paths": {
-            "@lib/src": [
-                "./libs/src"
-            ],
-            "@lib/src/*": [
-                "./libs/src/*"
-            ]
-        },
-        "incremental": true,
-        "skipLibCheck": true,
-        "strictNullChecks": true,
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitAny": false,
-        "strictBindCallApply": false,
-        "noFallthroughCasesInSwitch": false,
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "paths": {
+      "@lib/src": [
+        "./libs/src"
+      ],
+      "@lib/src/*": [
+        "./libs/src/*"
+      ]
     },
-    "include": [
-        "apps/**/*.ts",
-        "libs/**/*.ts",
-        "sst.config.ts"
-    ],
-    "exclude": [
-        ".sst",
-        "../fe",
-        "../shared",
-        "dist",
-        "node_modules",
-    ]
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+  },
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "sst.config.ts"
+  ],
+  "exclude": [
+    ".sst",
+    "../fe",
+    "../shared",
+    "dist",
+    "node_modules"
+  ]
 }

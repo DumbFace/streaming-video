@@ -46,8 +46,9 @@ export function LoginForm({
     const router = useRouter();
 
     const defaultValue: LoginFormValues = {
-        email: "",
-        password: "",
+        //TODO Remove default value later
+        email: "gv.runfast@gmail.com",
+        password: "abc123123",
     }
 
     const form = useForm<LoginFormValues>({

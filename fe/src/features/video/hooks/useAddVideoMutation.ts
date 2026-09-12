@@ -16,7 +16,9 @@ export const useAddVideoMutation = () => {
   if (!session?.user?.id) {
     throw new Error('user Id is undefined');
   }
+
   const queryClient = useQueryClient();
+
   const { pagination } = useVideoDialogStore((store) => store);
 
   return useMutation({

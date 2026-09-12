@@ -17,6 +17,8 @@
     "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
+    "@panva/hkdf": "^1.2.1",
+    "jose": "^6.2.12",
     "mongoose": "^9.7.3"
   },
   "devDependencies": {

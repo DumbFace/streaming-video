@@ -6,6 +6,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SharedModule } from '@lib/src';
+import { SseService } from '../../sse-gateway/src/sse.service';
 
 @Module({
   imports: [
@@ -127,6 +128,6 @@ import { SharedModule } from '@lib/src';
     }),
   ],
   controllers: [WorkerController],
-  providers: [WorkerService],
+  providers: [WorkerService, SseService],
 })
 export class WorkerModule {}

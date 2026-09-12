@@ -7,7 +7,6 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/src/components/
 import { SideBarApp } from "@/src/components/layout";
 import QueryProvider from "@/src/app/providers/query-provider";
 import { Toaster } from "sonner";
-import { SessionProvider } from "next-auth/react"
 import { Providers } from "@/src/app/providers/session-provider";
 
 

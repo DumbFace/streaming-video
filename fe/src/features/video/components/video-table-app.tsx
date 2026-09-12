@@ -2,7 +2,7 @@
 import { BaseTable } from '@/src/components/base/table/BaseTable'
 import { TypographyH1 } from '@/src/components/typographys/Typograpy'
 import { Button } from '@/src/components/ui/button'
-import { getVideos, VideoAggregate } from '@/src/features/video/actions/get-videos.action'
+import { getVideos } from '@/src/features/video/actions/get-videos.action'
 import { videoColumns } from '@/src/features/video/columns/columns'
 import VideoDialog from '@/src/features/video/components/dialog'
 import { DefaultPagination } from '@/src/features/video/constants/pagination.constant'
@@ -10,10 +10,29 @@ import { DialogMode, useVideoDialogStore } from '@/src/features/video/shared/dia
 import { useQuery } from '@tanstack/react-query'
 
 import { CirclePlus } from 'lucide-react'
+import { useEffect } from 'react'
 
+import { useSession } from "next-auth/react"
 
 
 export const VideoTableApp = () => {
+    const { data: session, status } = useSession()
+    console.log("session: ", session);
+
+    useEffect(() => {
+        const eventSource = new EventSource(
+            'http://localhost:3005/worker/test-sse',
+        );
+
+        eventSource.onmessage = ({ data }) => {
+            console.log('New message:', JSON.parse(data));
+        };
+
+        return () => {
+            eventSource.close();
+        };
+    }, []);
+
     const { setState, pagination, onPaginationChange } = useVideoDialogStore((store) => store);
 
     const { data, isLoading, isError } = useQuery({

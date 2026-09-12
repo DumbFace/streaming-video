@@ -29,6 +29,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
       }
+      console.log('JWT payload:', token);
+
       return token;
     },
 

@@ -19,6 +19,15 @@
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
       }
     },
+    "sse-gateway": {
+      "type": "application",
+      "root": "apps/sse-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/sse-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sse-gateway/tsconfig.app.json"
+      }
+    },
     "worker": {
       "type": "application",
       "root": "apps/worker",

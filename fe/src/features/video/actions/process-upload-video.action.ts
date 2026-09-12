@@ -1,12 +1,9 @@
 'use server';
 
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-import { Upload } from '@aws-sdk/lib-storage';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { extname } from 'path';
 import ffmpeg from 'fluent-ffmpeg';
-import { VideoFormValues } from '@/src/features/video/components/dialog';
-import { FnFailResponse, FnResponse } from '@/src/lib/fn-response';
+import { FnResponse } from '@/src/lib/fn-response';
 
 const ALLOWED_TYPES = [
   'video/mp4',
@@ -24,7 +21,6 @@ export async function processUploadedVideoAction(fileKey: string, directory: str
       throw new Error('FFMPEG or FFPROBE coudnt be null or undefined ');
 
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-
     const s3 = new S3Client({ region: 'ap-southeast-1' });
 
     const getCommand = new GetObjectCommand({ Bucket: BUCKET_NAME, Key: fileKey });
@@ -46,7 +42,6 @@ export async function processUploadedVideoAction(fileKey: string, directory: str
         }
 
         const duration = metadata.format.duration;
-
         if (typeof duration !== 'number' || duration <= 0) {
           return reject(FnResponse.Fail('Video duration is invalid'));
         }
